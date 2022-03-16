@@ -1,9 +1,14 @@
 package ru.example.cookies.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "products", schema = "cookies")
 public class Product {
     @Id
@@ -17,34 +22,18 @@ public class Product {
     @Column(name = "image")
     private String image;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "recipe_product"
+            , joinColumns = @JoinColumn(name = "product_id")
+            , inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
+    private List<Product> recipes;
+
     public Product(){}
 
     public Product(String name, String image) {
         this.name = name;
-        this.image = image;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
         this.image = image;
     }
 
